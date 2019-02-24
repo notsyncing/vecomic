@@ -1,0 +1,75 @@
+<div fxLayout="column" fxFill>
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="onToggleLeftSideNavClicked()" *ngIf="!!currentComic">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <span>
+      Vecomic
+      {{currentComic ? '- ' + currentComic.title + ' ' : ''}}
+      {{currentPath ? '- ' + currentPath + ' ' : ''}}
+      {{currentPage ? '[' + currentPage.title + ']' : ''}}
+      {{currentComic && currentComic.dirty ? ' *' : ''}}
+    </span>
+
+    <span fxFlex="1 1 auto"></span>
+
+    <button mat-icon-button (click)="onNewFolderClicked()">
+      <mat-icon>create_new_folder</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onOpenFolderClicked()">
+      <mat-icon>folder_open</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onSaveClicked()" *ngIf="!!currentComic"
+            [disabled]="!currentComic.dirty">
+      <mat-icon>save</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onCloseFolderClicked()" *ngIf="!!currentComic">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-drawer-container fxFlex>
+    <mat-drawer mode="over" [(opened)]="leftSideNavOpened">
+      <mat-action-list class="left-side-nav" cdkDropList (cdkDropListDropped)="onPageListReordered($event)"
+                *ngIf="!!currentComic">
+        <h3 mat-subheader fxLayout="row">
+          Pages
+          <span fxFlex="1 1 auto"></span>
+          <button mat-icon-button (click)="onAddPageClicked()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </h3>
+
+        <mat-list-item *ngFor="let page of currentComic.pages" cdkDrag fxLayout="row"
+                       (click)="switchToPage(page.id)" [ngClass]="{'current-page': page.id === currentPageId}">
+          <h4 class="page-title" mat-line>{{page.title}}</h4>
+
+          <span fxFlex="1 1 auto"></span>
+
+          <button mat-icon-button (click)="onChangePageTitleClicked(page.id, $event)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onRemovePageClicked(page, $event)" *ngIf="currentComic.pages.length > 1">
+            <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button cdkDragHandle (click)="$event.stopPropagation()"
+                  *ngIf="currentComic.pages.length > 1">
+            <mat-icon>drag_handle</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-action-list>
+    </mat-drawer>
+    <mat-drawer-content>
+      <as-split direction="horizontal" fxLayout="row" *ngIf="!!currentComic">
+        <as-split-area #canvas size="50" class="canvas"></as-split-area>
+
+        <as-split-area #codeEditor size="50" class="code-editor"></as-split-area>
+      </as-split>
+
+      <div class="empty-content" *ngIf="!currentComic">
+        No comic opened
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>

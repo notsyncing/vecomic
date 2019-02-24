@@ -1,0 +1,35 @@
+.canvas {
+  overflow: scroll !important;
+
+  ::ng-deep > svg {
+    min-height: 100%;
+    min-width: 100%;
+  }
+}
+
+.code-editor {
+  font-family: monospace;
+}
+
+.left-side-nav {
+  min-width: 20rem;
+
+  ::ng-deep .mat-list-item-content {
+    width: 100%;
+  }
+
+  .current-page .page-title {
+    font-weight: bold;
+  }
+}
+
+.empty-content {
+  font-family: monospace;
+  background: #ccc;
+  color: #bbb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 32px;
+}

@@ -36,8 +36,7 @@ export class HomeComponent implements OnInit {
 
   private editorInitialized = false;
 
-  gridWidth = 0;
-  gridHeight = 0;
+  showGrid = true;
 
   constructor(private comicManager: ComicManager) { }
 
@@ -251,6 +250,10 @@ export class HomeComponent implements OnInit {
     DomUtils.copyAttribute('viewBox', svg, svgGrid);
     DomUtils.copyAttribute('height', svg, svgGrid);
     DomUtils.copyAttribute('width', svg, svgGrid);
+  }
+
+  toggleGrid(show: boolean): void {
+    this.showGrid = show;
   }
 }
 

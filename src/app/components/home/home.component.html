@@ -62,23 +62,35 @@
     </mat-drawer>
     <mat-drawer-content>
       <as-split direction="horizontal" fxLayout="row" *ngIf="!!currentComic">
-        <as-split-area size="50" class="canvas-container">
-          <div class="canvas-grid">
-            <svg #gridSvg xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                  <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
-                      <path d="M 8 0 L 0 0 0 8" fill="none" stroke="gray" stroke-width="0.5" />
-                  </pattern>
-                  <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
-                      <rect width="80" height="80" fill="url(#smallGrid)" />
-                      <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1" />
-                  </pattern>
-              </defs>
+        <as-split-area size="50" fxLayout="column">
+          <div class="canvas-container" fxFlex="1 1 auto">
+            <div class="canvas-grid" [hidden]="!showGrid">
+              <svg #gridSvg xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
+                        <path d="M 8 0 L 0 0 0 8" fill="none" stroke="gray" stroke-width="0.5" />
+                    </pattern>
+                    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+                        <rect width="80" height="80" fill="url(#smallGrid)" />
+                        <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1" />
+                    </pattern>
+                </defs>
 
-              <rect width="100%" height="100%" fill="url(#grid)" />
-          </svg>
+                <rect width="100%" height="100%" fill="url(#grid)" />
+              </svg>
+            </div>
+
+            <div #canvas class="canvas"></div>
           </div>
-          <div #canvas class="canvas"></div>
+
+          <mat-toolbar fxFlex="0 0 auto">
+            <button mat-icon-button *ngIf="showGrid" (click)="toggleGrid(false)">
+              <mat-icon>grid_off</mat-icon>
+            </button>
+            <button mat-icon-button *ngIf="!showGrid" (click)="toggleGrid(true)">
+              <mat-icon>grid_on</mat-icon>
+            </button>
+          </mat-toolbar>
         </as-split-area>
 
         <as-split-area #codeEditor size="50" class="code-editor"></as-split-area>

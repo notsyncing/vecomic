@@ -1,9 +1,24 @@
-.canvas {
+.canvas-container {
+  position: relative;
   overflow: scroll !important;
 
-  ::ng-deep > svg {
+  .canvas-grid {
+    position: absolute;
+    z-index: 0;
     min-height: 100%;
     min-width: 100%;
+  }
+
+  .canvas {
+    position: relative;
+    z-index: 9999;
+    height: 100%;
+    width: 100%;
+
+    ::ng-deep > svg {
+      min-height: 100%;
+      min-width: 100%;
+    }
   }
 }
 

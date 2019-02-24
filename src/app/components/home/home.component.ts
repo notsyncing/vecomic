@@ -8,6 +8,7 @@ import { ComicManager } from '../../business/comic-manager';
 import { Comic, Page } from '../../business/models/comic-models';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import * as vex from 'vex-js';
+import { DomUtils } from '../../utils/dom-utils';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +23,9 @@ export class HomeComponent implements OnInit {
   @ViewChild('canvas')
   canvas: ElementRef<HTMLDivElement>;
 
+  @ViewChild('gridSvg')
+  gridSvg: ElementRef<SVGSVGElement>;
+
   private codeEditor: ace.Ace.Editor;
   private editorChangeSubject = new Subject<ace.Ace.Delta>();
 
@@ -31,6 +35,9 @@ export class HomeComponent implements OnInit {
   leftSideNavOpened = false;
 
   private editorInitialized = false;
+
+  gridWidth = 0;
+  gridHeight = 0;
 
   constructor(private comicManager: ComicManager) { }
 
@@ -58,6 +65,8 @@ export class HomeComponent implements OnInit {
         this.canvas.nativeElement.innerHTML = code;
 
         this.currentPage.content = code;
+
+        this.updateGrid();
       });
   }
 
@@ -188,7 +197,7 @@ export class HomeComponent implements OnInit {
     vex.dialog.prompt({
       message: 'Please enter new title',
       placeholder: page.title,
-      callback: newTitle => {
+      callback: (newTitle: string) => {
         if (!newTitle) {
           return;
         }
@@ -226,6 +235,22 @@ export class HomeComponent implements OnInit {
     if (page.id === this.currentPageId) {
       this.switchToPage(this.currentComic.pages[0].id);
     }
+  }
+
+  private updateGrid(): void {
+    const svg = this.canvas.nativeElement.querySelector('svg');
+    const svgGrid = this.gridSvg.nativeElement;
+
+    if (!svg) {
+      svgGrid.removeAttribute('viewBox');
+      svgGrid.setAttribute('height', '100%');
+      svgGrid.setAttribute('width', '100%');
+      return;
+    }
+
+    DomUtils.copyAttribute('viewBox', svg, svgGrid);
+    DomUtils.copyAttribute('height', svg, svgGrid);
+    DomUtils.copyAttribute('width', svg, svgGrid);
   }
 }
 

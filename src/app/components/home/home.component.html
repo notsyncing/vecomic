@@ -67,12 +67,22 @@
             <div class="canvas-grid" [hidden]="!showGrid">
               <svg #gridSvg xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
-                        <path d="M 8 0 L 0 0 0 8" fill="none" stroke="gray" stroke-width="0.5" />
+                    <pattern id="smallGrid" [attr.width]="comicSettings.grid.smallUnitSize"
+                             [attr.height]="comicSettings.grid.smallUnitSize"
+                             patternUnits="userSpaceOnUse">
+                        <path [attr.d]="'M ' + comicSettings.grid.smallUnitSize + ' 0 L 0 0 0 ' + comicSettings.grid.smallUnitSize"
+                              fill="none"
+                              [attr.stroke]="comicSettings.grid.smallUnitLineColor"
+                              [attr.stroke-width]="comicSettings.grid.smallUnitLineWidth" />
                     </pattern>
-                    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
-                        <rect width="80" height="80" fill="url(#smallGrid)" />
-                        <path d="M 80 0 L 0 0 0 80" fill="none" stroke="gray" stroke-width="1" />
+
+                    <pattern id="grid" [attr.width]="comicSettings.grid.bigUnitSize"
+                             [attr.height]="comicSettings.grid.bigUnitSize" patternUnits="userSpaceOnUse">
+                        <rect [attr.width]="comicSettings.grid.bigUnitSize"
+                              [attr.height]="comicSettings.grid.bigUnitSize" fill="url(#smallGrid)" />
+                        <path [attr.d]="'M ' + comicSettings.grid.bigUnitSize + ' 0 L 0 0 0 ' + comicSettings.grid.bigUnitSize"
+                              fill="none" [attr.stroke]="comicSettings.grid.bigUnitLineColor"
+                              [attr.stroke-width]="comicSettings.grid.bigUnitLineWidth" />
                     </pattern>
                 </defs>
 
@@ -83,12 +93,18 @@
             <div #canvas class="canvas"></div>
           </div>
 
-          <mat-toolbar fxFlex="0 0 auto">
+          <mat-toolbar fxFlex="0 0 auto" fxLayout="row">
             <button mat-icon-button *ngIf="showGrid" (click)="toggleGrid(false)">
               <mat-icon>grid_off</mat-icon>
             </button>
             <button mat-icon-button *ngIf="!showGrid" (click)="toggleGrid(true)">
               <mat-icon>grid_on</mat-icon>
+            </button>
+
+            <span fxFlex="1 1 auto"></span>
+
+            <button mat-icon-button (click)="onSvgContentSettingsClicked()">
+              <mat-icon>tune</mat-icon>
             </button>
           </mat-toolbar>
         </as-split-area>

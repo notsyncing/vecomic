@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-import {MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule} from '@angular/material';
+import {MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule, MatDialogModule, MatFormFieldModule, MatInputModule} from '@angular/material';
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
 
@@ -29,6 +29,8 @@ import { WebviewDirective } from './directives/webview.directive';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { ComicManager } from './business/comic-manager';
+import { SvgContentSettingsComponent } from './components/svg-content-settings/svg-content-settings.component';
+import { SettingsManager } from './business/settings-manager';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -39,7 +41,8 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [
     AppComponent,
     HomeComponent,
-    WebviewDirective
+    WebviewDirective,
+    SvgContentSettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -61,9 +64,15 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatButtonModule,
     MatSidenavModule,
     MatListModule,
+    MatDialogModule,
+    MatInputModule,
+    MatFormFieldModule,
     DragDropModule
   ],
-  providers: [ElectronService, ComicManager],
-  bootstrap: [AppComponent]
+  providers: [ElectronService, ComicManager, SettingsManager],
+  bootstrap: [AppComponent],
+  entryComponents: [
+    SvgContentSettingsComponent
+  ]
 })
 export class AppModule { }

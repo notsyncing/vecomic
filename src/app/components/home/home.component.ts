@@ -9,6 +9,10 @@ import { Comic, Page } from '../../business/models/comic-models';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import * as vex from 'vex-js';
 import { DomUtils } from '../../utils/dom-utils';
+import { MatDialog } from '@angular/material';
+import { SvgContentSettingsComponent } from '../svg-content-settings/svg-content-settings.component';
+import { SettingsManager } from '../../business/settings-manager';
+import { ComicSettings, GlobalSettings } from '../../business/models/settings-models';
 
 @Component({
   selector: 'app-home',
@@ -38,7 +42,8 @@ export class HomeComponent implements OnInit {
 
   showGrid = true;
 
-  constructor(private comicManager: ComicManager) { }
+  constructor(private comicManager: ComicManager, private dialog: MatDialog,
+    private settingsManager: SettingsManager) { }
 
   get currentPath(): string {
     if (!this.currentComic) {
@@ -54,6 +59,14 @@ export class HomeComponent implements OnInit {
     }
 
     return this.currentComic.getPage(this.currentPageId);
+  }
+
+  get globalSettings(): GlobalSettings {
+    return this.settingsManager.globalSettings;
+  }
+
+  get comicSettings(): ComicSettings {
+    return this.settingsManager.comicSettings;
   }
 
   ngOnInit() {
@@ -87,6 +100,12 @@ export class HomeComponent implements OnInit {
 
   onToggleLeftSideNavClicked(): void {
     this.leftSideNavOpened = !this.leftSideNavOpened;
+  }
+
+  private afterOpenDirectory(): void {
+    this.settingsManager.readComicSettingsFrom(this.currentComic.path);
+
+    this.prepareToEdit();
   }
 
   private prepareToEdit(): void {
@@ -123,7 +142,7 @@ export class HomeComponent implements OnInit {
 
     const path = paths[0];
     this.currentComic = this.comicManager.create(path);
-    this.prepareToEdit();
+    this.afterOpenDirectory();
   }
 
   onOpenFolderClicked(): void {
@@ -137,7 +156,7 @@ export class HomeComponent implements OnInit {
 
     const path = paths[0];
     this.currentComic = this.comicManager.open(path);
-    this.prepareToEdit();
+    this.afterOpenDirectory();
   }
 
   onSaveClicked(): void {
@@ -178,6 +197,8 @@ export class HomeComponent implements OnInit {
     this.currentComic = null;
     this.editorInitialized = false;
     this.switchToPage(null);
+
+    this.settingsManager.resetComicSettings();
   }
 
   onPageListReordered(event: CdkDragDrop<string[]>): void {
@@ -254,6 +275,18 @@ export class HomeComponent implements OnInit {
 
   toggleGrid(show: boolean): void {
     this.showGrid = show;
+  }
+
+  onSvgContentSettingsClicked(): void {
+    const dlg = this.dialog.open(SvgContentSettingsComponent, {
+      hasBackdrop: false
+    });
+
+    dlg.afterClosed().subscribe(r => {
+      if (r) {
+        this.settingsManager.saveCurrentComicSettings();
+      }
+    });
   }
 }
 

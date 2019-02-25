@@ -1,0 +1,40 @@
+<h1 mat-dialog-title>Comic settings</h1>
+
+<div mat-dialog-content fxLayout="row wrap" fxLayoutGap="1rem">
+  <p fxFlex="100%" class="mat-subheading-1">Grid settings</p>
+
+  <mat-form-field fxFlex="calc(50% - 1rem)">
+    <input matInput type="number" placeholder="Big unit size (px)"
+           [(ngModel)]="comicSettings.grid.bigUnitSize">
+  </mat-form-field>
+
+  <mat-form-field fxFlex="calc(50% - 1rem)">
+    <input matInput type="number" placeholder="Small unit size (px)"
+            [(ngModel)]="comicSettings.grid.smallUnitSize">
+  </mat-form-field>
+
+  <mat-form-field fxFlex="calc(50% - 1rem)">
+    <input matInput type="number" placeholder="Big unit line width (px)"
+            [(ngModel)]="comicSettings.grid.bigUnitLineWidth">
+  </mat-form-field>
+
+  <mat-form-field fxFlex="calc(50% - 1rem)">
+    <input matInput type="number" placeholder="Small unit line width (px)"
+            [(ngModel)]="comicSettings.grid.smallUnitLineWidth">
+  </mat-form-field>
+
+  <mat-form-field fxFlex="calc(50% - 1rem)">
+    <input matInput type="color" placeholder="Big unit line color"
+            [(ngModel)]="comicSettings.grid.bigUnitLineColor">
+  </mat-form-field>
+
+  <mat-form-field fxFlex="calc(50% - 1rem)">
+    <input matInput type="color" placeholder="Small unit line color"
+            [(ngModel)]="comicSettings.grid.smallUnitLineColor">
+  </mat-form-field>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button cdkFocusInitial (click)="onOkClicked()">Ok</button>
+  <button mat-button (click)="onCancelClicked()">Cancel</button>
+</div>

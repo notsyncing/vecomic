@@ -279,7 +279,7 @@ export class HomeComponent implements OnInit {
 
   onSvgContentSettingsClicked(): void {
     const dlg = this.dialog.open(SvgContentSettingsComponent, {
-      hasBackdrop: false
+      disableClose: true
     });
 
     dlg.afterClosed().subscribe(r => {

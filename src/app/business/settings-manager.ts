@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Settings, GlobalSettings, ComicSettings } from "./models/settings-models";
+import { Settings, GlobalSettings, ComicSettings, SessionSettings } from "./models/settings-models";
 import * as fs from 'fs';
 import * as fsPath from 'path';
 
@@ -22,9 +22,14 @@ export class SettingsManager {
     }
   };
 
+  private defaultSessionSettings: SessionSettings = {
+    zoomPercentage: 100
+  }
+
   private settings: Settings = {
     global: this.defaultGlobalSettings,
-    comic: this.defaultComicSettings
+    comic: this.defaultComicSettings,
+    session: this.defaultSessionSettings
   };
 
   private currentComicBasePath: string = null;
@@ -46,6 +51,10 @@ export class SettingsManager {
 
   set comicSettings(value: ComicSettings) {
     this.settings.comic = value;
+  }
+
+  get sessionSettings(): SessionSettings {
+    return this.settings.session;
   }
 
   readComicSettingsFrom(comicBasePath: string): void {
@@ -73,6 +82,7 @@ export class SettingsManager {
 
   resetComicSettings(): void {
     this.settings.comic = this.defaultComicSettings;
+    this.settings.session = this.defaultSessionSettings;
     this.currentComicBasePath = null;
   }
 }

@@ -1,6 +1,7 @@
 export interface Settings {
   global: GlobalSettings;
   comic: ComicSettings;
+  session: SessionSettings;
 }
 
 export interface GlobalSettings {
@@ -20,4 +21,8 @@ export interface GridSettings {
 
   bigUnitLineColor: string;
   smallUnitLineColor: string;
+}
+
+export interface SessionSettings {
+  zoomPercentage: number;
 }

@@ -12,7 +12,7 @@ import { DomUtils } from '../../utils/dom-utils';
 import { MatDialog } from '@angular/material';
 import { SvgContentSettingsComponent } from '../svg-content-settings/svg-content-settings.component';
 import { SettingsManager } from '../../business/settings-manager';
-import { ComicSettings, GlobalSettings } from '../../business/models/settings-models';
+import { ComicSettings, GlobalSettings, SessionSettings } from '../../business/models/settings-models';
 
 @Component({
   selector: 'app-home',
@@ -67,6 +67,10 @@ export class HomeComponent implements OnInit {
 
   get comicSettings(): ComicSettings {
     return this.settingsManager.comicSettings;
+  }
+
+  get sessionSettings(): SessionSettings {
+    return this.settingsManager.sessionSettings;
   }
 
   ngOnInit() {
@@ -287,6 +291,22 @@ export class HomeComponent implements OnInit {
         this.settingsManager.saveCurrentComicSettings();
       }
     });
+  }
+
+  onSvgContentZoomInClicked(): void {
+    if (this.sessionSettings.zoomPercentage >= 1000) {
+      return;
+    }
+
+    this.sessionSettings.zoomPercentage += 10;
+  }
+
+  onSvgContentZoomOutClicked(): void {
+    if (this.sessionSettings.zoomPercentage <= 0) {
+      return;
+    }
+
+    this.sessionSettings.zoomPercentage -= 10;
   }
 }
 

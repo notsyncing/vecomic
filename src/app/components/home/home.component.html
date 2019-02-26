@@ -64,7 +64,8 @@
       <as-split direction="horizontal" fxLayout="row" *ngIf="!!currentComic">
         <as-split-area size="50" fxLayout="column">
           <div class="canvas-container" fxFlex="1 1 auto">
-            <div class="canvas-grid" [hidden]="!showGrid">
+            <div class="canvas-grid" [hidden]="!showGrid"
+                 [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}">
               <svg #gridSvg xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <pattern id="smallGrid" [attr.width]="comicSettings.grid.smallUnitSize"
@@ -90,7 +91,8 @@
               </svg>
             </div>
 
-            <div #canvas class="canvas"></div>
+            <div #canvas class="canvas"
+                 [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}"></div>
           </div>
 
           <mat-toolbar fxFlex="0 0 auto" fxLayout="row">
@@ -101,7 +103,19 @@
               <mat-icon>grid_on</mat-icon>
             </button>
 
-            <span fxFlex="1 1 auto"></span>
+            <div class="zoom-control" fxFlex="1 1 auto">
+              <button mat-icon-button (click)="onSvgContentZoomInClicked()">
+                <mat-icon>zoom_in</mat-icon>
+              </button>
+
+              <input type="number" class="zoom-value-input"
+                      [(ngModel)]="sessionSettings.zoomPercentage">
+              <span class="zoom-value-input-suffix">%</span>
+
+              <button mat-icon-button (click)="onSvgContentZoomOutClicked()">
+                <mat-icon>zoom_out</mat-icon>
+              </button>
+            </div>
 
             <button mat-icon-button (click)="onSvgContentSettingsClicked()">
               <mat-icon>tune</mat-icon>

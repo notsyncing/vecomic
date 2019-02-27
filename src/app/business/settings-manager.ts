@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
-import { Settings, GlobalSettings, ComicSettings, SessionSettings } from "./models/settings-models";
+import { Settings, GlobalSettings, ComicSettings, SessionSettings, SessionPageSettings } from "./models/settings-models";
 import * as fs from 'fs';
 import * as fsPath from 'path';
+import { Page } from "./models/comic-models";
 
 @Injectable()
 export class SettingsManager {
@@ -23,8 +24,14 @@ export class SettingsManager {
   };
 
   private defaultSessionSettings: SessionSettings = {
-    zoomPercentage: 100
-  }
+    zoomPercentage: 100,
+
+    perPage: {}
+  };
+
+  private defaultSessionPageSettings: SessionPageSettings = {
+    hiddenLayers: {}
+  };
 
   private settings: Settings = {
     global: this.defaultGlobalSettings,
@@ -84,5 +91,13 @@ export class SettingsManager {
     this.settings.comic = this.defaultComicSettings;
     this.settings.session = this.defaultSessionSettings;
     this.currentComicBasePath = null;
+  }
+
+  makeSureSessionPageSettings(pageId: string): void {
+    if (Reflect.has(this.sessionSettings.perPage, pageId)) {
+      return;
+    }
+
+    this.sessionSettings.perPage[pageId] = JSON.parse(JSON.stringify(this.defaultSessionPageSettings));
   }
 }

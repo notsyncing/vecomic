@@ -9,10 +9,11 @@ import { Comic, Page } from '../../business/models/comic-models';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import * as vex from 'vex-js';
 import { DomUtils } from '../../utils/dom-utils';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatCheckboxChange } from '@angular/material';
 import { SvgContentSettingsComponent } from '../svg-content-settings/svg-content-settings.component';
 import { SettingsManager } from '../../business/settings-manager';
-import { ComicSettings, GlobalSettings, SessionSettings } from '../../business/models/settings-models';
+import { ComicSettings, GlobalSettings, SessionSettings, SessionPageSettings } from '../../business/models/settings-models';
+import { PageAnalyer, PageDetails } from '../../business/page-analyzer';
 
 @Component({
   selector: 'app-home',
@@ -41,9 +42,10 @@ export class HomeComponent implements OnInit {
   private editorInitialized = false;
 
   showGrid = true;
+  pageDetails: PageDetails = null;
 
   constructor(private comicManager: ComicManager, private dialog: MatDialog,
-    private settingsManager: SettingsManager) { }
+    private settingsManager: SettingsManager, private pageAnalyzer: PageAnalyer) { }
 
   get currentPath(): string {
     if (!this.currentComic) {
@@ -73,16 +75,31 @@ export class HomeComponent implements OnInit {
     return this.settingsManager.sessionSettings;
   }
 
+  get sessionPageSettings(): SessionPageSettings {
+    if (!this.currentPageId) {
+      return {} as SessionPageSettings;
+    }
+
+    return this.sessionSettings.perPage[this.currentPageId] || {} as SessionPageSettings;
+  }
+
   ngOnInit() {
     this.editorChangeSubject
       .pipe(debounceTime(500))
       .subscribe(_ => {
         const code = this.codeEditor.getValue();
-        this.canvas.nativeElement.innerHTML = code;
+
+        try {
+          this.canvas.nativeElement.innerHTML = code;
+        } catch (err) {
+          console.warn(err);
+        }
 
         this.currentPage.content = code;
 
         this.updateGrid();
+
+        this.updateSessionPageSettings();
       });
   }
 
@@ -243,6 +260,8 @@ export class HomeComponent implements OnInit {
 
     this.currentPageId = pageId;
 
+    this.settingsManager.makeSureSessionPageSettings(pageId);
+
     this.codeEditor.setValue(this.currentPage.content);
     this.codeEditor.clearSelection();
   }
@@ -307,6 +326,46 @@ export class HomeComponent implements OnInit {
     }
 
     this.sessionSettings.zoomPercentage -= 10;
+  }
+
+  private updateSessionPageSettings(): void {
+    const svgElem = this.canvas.nativeElement.querySelector('svg');
+    this.pageDetails = this.pageAnalyzer.analyze(this.currentPage, svgElem);
+
+    const pageSettings = this.sessionSettings.perPage[this.currentPageId];
+
+    for (const layer of Object.keys(pageSettings.hiddenLayers)) {
+      if (this.pageDetails.layers.indexOf(layer) < 0) {
+        delete pageSettings.hiddenLayers[layer];
+      }
+    }
+
+    this.updateSvgContentLayersVisiblity();
+  }
+
+  onSvgContentLayerVisibilityChanged(layer: string, event: MatCheckboxChange): void {
+    const visible = event.checked;
+    const pageSettings = this.sessionSettings.perPage[this.currentPageId];
+
+    pageSettings.hiddenLayers[layer] = !visible;
+
+    this.updateSvgContentLayersVisiblity();
+  }
+
+  private updateSvgContentLayersVisiblity(): void {
+    const svgElem = this.canvas.nativeElement.querySelector('svg');
+    const layerElems = this.pageAnalyzer.getAllLayers(svgElem);
+    const pageSettings = this.sessionSettings.perPage[this.currentPageId];
+
+    layerElems.forEach((layerElem, layerName) => {
+      const visible = !pageSettings.hiddenLayers[layerName];
+
+      if (visible) {
+        layerElem.removeAttribute('visibility');
+      } else {
+        layerElem.setAttribute('visibility', 'hidden');
+      }
+    });
   }
 }
 

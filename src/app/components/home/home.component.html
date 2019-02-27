@@ -117,6 +117,10 @@
               </button>
             </div>
 
+            <button mat-icon-button [matMenuTriggerFor]="svgContentLayerMenu">
+              <mat-icon>layers</mat-icon>
+            </button>
+
             <button mat-icon-button (click)="onSvgContentSettingsClicked()">
               <mat-icon>tune</mat-icon>
             </button>
@@ -132,3 +136,16 @@
     </mat-drawer-content>
   </mat-drawer-container>
 </div>
+
+<mat-menu #svgContentLayerMenu="matMenu" yPosition="above">
+  <mat-checkbox *ngFor="let l of pageDetails?.layers || []"
+                class="layer-menu-item"
+                [checked]="!sessionPageSettings.hiddenLayers[l]"
+                (change)="onSvgContentLayerVisibilityChanged(l, $event)"
+                (click)="$event.stopPropagation()">
+    {{l}}
+  </mat-checkbox>
+
+  <span class="layer-menu-no-layers"
+        *ngIf="(pageDetails?.layers?.length || 0) === 0">(No layers)</span>
+</mat-menu>

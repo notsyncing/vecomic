@@ -25,4 +25,18 @@ export interface GridSettings {
 
 export interface SessionSettings {
   zoomPercentage: number;
+
+  perPage: SessionPageSettingsObject;
+}
+
+export interface SessionPageSettingsObject {
+  [id: string]: SessionPageSettings;
+}
+
+export interface SessionPageSettings {
+  hiddenLayers: HiddenLayers;
+}
+
+export interface HiddenLayers {
+  [layer: string]: boolean
 }

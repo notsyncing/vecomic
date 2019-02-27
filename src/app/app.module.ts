@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-import {MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule, MatDialogModule, MatFormFieldModule, MatInputModule} from '@angular/material';
+import {MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatMenuModule, MatCheckboxModule} from '@angular/material';
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
 
@@ -31,6 +31,7 @@ import { HomeComponent } from './components/home/home.component';
 import { ComicManager } from './business/comic-manager';
 import { SvgContentSettingsComponent } from './components/svg-content-settings/svg-content-settings.component';
 import { SettingsManager } from './business/settings-manager';
+import { PageAnalyer } from './business/page-analyzer';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -67,9 +68,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatDialogModule,
     MatInputModule,
     MatFormFieldModule,
+    MatMenuModule,
+    MatCheckboxModule,
     DragDropModule
   ],
-  providers: [ElectronService, ComicManager, SettingsManager],
+  providers: [ElectronService, ComicManager, SettingsManager, PageAnalyer],
   bootstrap: [AppComponent],
   entryComponents: [
     SvgContentSettingsComponent

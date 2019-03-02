@@ -75,12 +75,16 @@
                               [gridSettings]="comicSettings.grid" [rulerSettings]="comicSettings.ruler">
             </vc-canvas-rulers>
 
-            <div #mouseCrosshairArea class="canvas-overlay canvas-mouse-crosshair" (mouseenter)="onMouseCrosshairEnter()"
+            <vc-mouse-crosshair class="canvas-overlay canvas-overlay-most-front" [show]="showRuler"
+                                [height]="currentComicHeight" [width]="currentComicWidth">
+            </vc-mouse-crosshair>
+
+            <!--<div #mouseCrosshairArea class="canvas-overlay canvas-mouse-crosshair" (mouseenter)="onMouseCrosshairEnter()"
                  (mousemove)="onMouseCrosshairMove($event)"
                  (mouseleave)="onMouseCrosshairLeave()" [hidden]="!showRuler">
               <div #verticalMouseCrosshair class="crosshair-vertical" [hidden]="!showMouseCrosshair"></div>
               <div #horizontalMouseCrosshair class="crosshair-horizontal" [hidden]="!showMouseCrosshair"></div>
-            </div>
+            </div>-->
 
             <div #canvas class="canvas"
                  [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}"></div>

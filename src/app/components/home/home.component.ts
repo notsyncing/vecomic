@@ -31,15 +31,6 @@ export class HomeComponent implements OnInit {
   @ViewChild('canvas')
   canvas: ElementRef<HTMLDivElement>;
 
-  @ViewChild('horizontalMouseCrosshair')
-  horizontalMouseCrosshair: ElementRef<HTMLDivElement>;
-
-  @ViewChild('verticalMouseCrosshair')
-  verticalMouseCrosshair: ElementRef<HTMLDivElement>;
-
-  @ViewChild('mouseCrosshairArea')
-  mouseCrosshairArea: ElementRef<HTMLDivElement>;
-
   private codeEditor: ace.Ace.Editor;
   private editorChangeSubject = new Subject<ace.Ace.Delta>();
 
@@ -55,7 +46,6 @@ export class HomeComponent implements OnInit {
 
   showGrid = true;
   showRuler = true;
-  showMouseCrosshair = false;
   pageDetails: PageDetails = null;
 
   constructor(private comicManager: ComicManager, private dialog: MatDialog,
@@ -306,9 +296,6 @@ export class HomeComponent implements OnInit {
 
     this.currentComicWidth = parseInt(svg.getAttribute('width'));
     this.currentComicHeight = parseInt(svg.getAttribute('height'));
-
-    this.mouseCrosshairArea.nativeElement.style.height = `${svg.getAttribute('height')}px`;
-    this.mouseCrosshairArea.nativeElement.style.width = `${svg.getAttribute('width')}px`;
   }
 
   toggleGrid(show: boolean): void {
@@ -385,31 +372,6 @@ export class HomeComponent implements OnInit {
 
   toggleRuler(show: boolean): void {
     this.showRuler = show;
-  }
-
-  onMouseCrosshairEnter(): void {
-    if (!this.showRuler) {
-      return;
-    }
-
-    this.showMouseCrosshair = true;
-  }
-
-  onMouseCrosshairMove(event: MouseEvent): void {
-    if (!this.showRuler) {
-      return;
-    }
-
-    this.verticalMouseCrosshair.nativeElement.style.transform = `translateX(${event.offsetX}px)`;
-    this.horizontalMouseCrosshair.nativeElement.style.transform = `translateY(${event.offsetY}px)`;
-  }
-
-  onMouseCrosshairLeave(): void {
-    if (!this.showRuler) {
-      return;
-    }
-
-    this.showMouseCrosshair = false;
   }
 }
 

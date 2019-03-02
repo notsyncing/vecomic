@@ -35,6 +35,7 @@ import { PageAnalyer } from './business/page-analyzer';
 import { CanvasGridComponent } from './components/canvas-grid/canvas-grid.component';
 import { CanvasRulerComponent } from './components/canvas-rulers/canvas-ruler.component';
 import { CanvasRulersComponent } from './components/canvas-rulers/canvas-rulers.component';
+import { MouseCrosshairComponent } from './components/mouse-crosshair/mouse-crosshair.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -49,7 +50,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SvgContentSettingsComponent,
     CanvasGridComponent,
     CanvasRulerComponent,
-    CanvasRulersComponent
+    CanvasRulersComponent,
+    MouseCrosshairComponent
   ],
   imports: [
     BrowserModule,

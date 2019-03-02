@@ -10,26 +10,8 @@
     transform-origin: 0% 0% 0px;
   }
 
-  .canvas-mouse-crosshair {
+  .canvas-overlay-most-front {
     z-index: 9999;
-    cursor: none;
-
-    > div {
-      position: absolute;
-      left: 0;
-      top: 0;
-      border-top: 1px dashed black;
-      border-left: 1px dashed black;
-      transform-origin: 0% 0% 0px;
-    }
-
-    .crosshair-vertical {
-      height: 100%;
-    }
-
-    .crosshair-horizontal {
-      width: 100%;
-    }
   }
 
   .canvas {

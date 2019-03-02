@@ -3,7 +3,14 @@ export class DomUtils {
     if (!fromElem.hasAttribute(attrName)) {
       toElem.removeAttribute(attrName);
     } else {
-      toElem.setAttribute(attrName, fromElem.getAttribute(attrName));
+      const newValue = fromElem.getAttribute(attrName);
+      const oldValue = toElem.getAttribute(attrName);
+
+      if (newValue === oldValue) {
+        return;
+      }
+
+      toElem.setAttribute(attrName, newValue);
     }
   }
 }

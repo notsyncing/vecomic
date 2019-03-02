@@ -1,0 +1,25 @@
+<div class="canvas-grid" [hidden]="!show">
+  <svg xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="smallGrid" [attr.width]="settings.smallUnitSize"
+                [attr.height]="settings.smallUnitSize"
+                patternUnits="userSpaceOnUse">
+        <path [attr.d]="'M ' + settings.smallUnitSize + ' 0 L 0 0 0 ' + settings.smallUnitSize"
+              fill="none"
+              [attr.stroke]="settings.smallUnitLineColor"
+              [attr.stroke-width]="settings.smallUnitLineWidth" />
+      </pattern>
+
+      <pattern id="grid" [attr.width]="settings.bigUnitSize"
+                [attr.height]="settings.bigUnitSize" patternUnits="userSpaceOnUse">
+        <rect [attr.width]="settings.bigUnitSize"
+              [attr.height]="settings.bigUnitSize" fill="url(#smallGrid)" />
+        <path [attr.d]="'M ' + settings.bigUnitSize + ' 0 L 0 0 0 ' + settings.bigUnitSize"
+              fill="none" [attr.stroke]="settings.bigUnitLineColor"
+              [attr.stroke-width]="settings.bigUnitLineWidth" />
+      </pattern>
+    </defs>
+
+    <rect width="100%" height="100%" fill="url(#grid)" />
+  </svg>
+</div>

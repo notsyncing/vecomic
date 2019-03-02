@@ -64,32 +64,9 @@
       <as-split direction="horizontal" fxLayout="row" *ngIf="!!currentComic">
         <as-split-area size="50" fxLayout="column">
           <div #canvasContainer class="canvas-container" fxFlex="1 1 auto">
-            <div class="canvas-overlay canvas-grid" [hidden]="!showGrid"
+            <vc-canvas-grid class="canvas-overlay" [show]="showGrid" [settings]="comicSettings.grid"
                  [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}">
-              <svg xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <pattern id="smallGrid" [attr.width]="comicSettings.grid.smallUnitSize"
-                            [attr.height]="comicSettings.grid.smallUnitSize"
-                            patternUnits="userSpaceOnUse">
-                    <path [attr.d]="'M ' + comicSettings.grid.smallUnitSize + ' 0 L 0 0 0 ' + comicSettings.grid.smallUnitSize"
-                          fill="none"
-                          [attr.stroke]="comicSettings.grid.smallUnitLineColor"
-                          [attr.stroke-width]="comicSettings.grid.smallUnitLineWidth" />
-                  </pattern>
-
-                  <pattern id="grid" [attr.width]="comicSettings.grid.bigUnitSize"
-                            [attr.height]="comicSettings.grid.bigUnitSize" patternUnits="userSpaceOnUse">
-                    <rect [attr.width]="comicSettings.grid.bigUnitSize"
-                          [attr.height]="comicSettings.grid.bigUnitSize" fill="url(#smallGrid)" />
-                    <path [attr.d]="'M ' + comicSettings.grid.bigUnitSize + ' 0 L 0 0 0 ' + comicSettings.grid.bigUnitSize"
-                          fill="none" [attr.stroke]="comicSettings.grid.bigUnitLineColor"
-                          [attr.stroke-width]="comicSettings.grid.bigUnitLineWidth" />
-                  </pattern>
-                </defs>
-
-                <rect width="100%" height="100%" fill="url(#grid)" />
-              </svg>
-            </div>
+            </vc-canvas-grid>
 
             <div class="canvas-overlay canvas-rulers" [hidden]="!showRuler"
                  [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}">

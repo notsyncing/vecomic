@@ -32,6 +32,7 @@ import { ComicManager } from './business/comic-manager';
 import { SvgContentSettingsComponent } from './components/svg-content-settings/svg-content-settings.component';
 import { SettingsManager } from './business/settings-manager';
 import { PageAnalyer } from './business/page-analyzer';
+import { CanvasGridComponent } from './components/canvas-grid/canvas-grid.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -43,7 +44,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     HomeComponent,
     WebviewDirective,
-    SvgContentSettingsComponent
+    SvgContentSettingsComponent,
+    CanvasGridComponent
   ],
   imports: [
     BrowserModule,

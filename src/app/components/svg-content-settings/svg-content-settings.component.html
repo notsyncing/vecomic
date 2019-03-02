@@ -33,6 +33,28 @@
                 [(ngModel)]="comicSettings.grid.smallUnitLineColor">
       </mat-form-field>
     </mat-tab>
+
+    <mat-tab label="Ruler">
+      <mat-form-field fxFlex="calc(50% - 1rem)">
+        <input matInput type="number" placeholder="Big unit line width (px)"
+                [(ngModel)]="comicSettings.ruler.bigUnitLineWidth">
+      </mat-form-field>
+
+      <mat-form-field fxFlex="calc(50% - 1rem)">
+        <input matInput type="number" placeholder="Small unit line width (px)"
+                [(ngModel)]="comicSettings.ruler.smallUnitLineWidth">
+      </mat-form-field>
+
+      <mat-form-field fxFlex="calc(50% - 1rem)">
+        <input matInput type="color" placeholder="Big unit line color"
+                [(ngModel)]="comicSettings.ruler.bigUnitLineColor">
+      </mat-form-field>
+
+      <mat-form-field fxFlex="calc(50% - 1rem)">
+        <input matInput type="color" placeholder="Small unit line color"
+                [(ngModel)]="comicSettings.ruler.smallUnitLineColor">
+      </mat-form-field>
+    </mat-tab>
   </mat-tab-group>
 </div>
 

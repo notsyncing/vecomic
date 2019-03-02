@@ -10,7 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
-import {MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatMenuModule, MatCheckboxModule} from '@angular/material';
+import {MatToolbarModule, MatIconModule, MatButtonModule, MatSidenavModule, MatListModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatMenuModule, MatCheckboxModule, MatButtonToggleModule} from '@angular/material';
 
 import {DragDropModule} from '@angular/cdk/drag-drop';
 

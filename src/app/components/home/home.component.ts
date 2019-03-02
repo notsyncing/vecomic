@@ -25,11 +25,26 @@ export class HomeComponent implements OnInit {
   @ViewChild('codeEditor')
   codeEditorElement: ElementRef<HTMLDivElement>;
 
+  @ViewChild('canvasContainer')
+  canvasContainer: ElementRef<HTMLDivElement>;
+
   @ViewChild('canvas')
   canvas: ElementRef<HTMLDivElement>;
 
-  @ViewChild('gridSvg')
-  gridSvg: ElementRef<SVGSVGElement>;
+  @ViewChild('horizontalRuler')
+  horizontalRuler: ElementRef<HTMLDivElement>;
+
+  @ViewChild('verticalRuler')
+  verticalRuler: ElementRef<HTMLDivElement>;
+
+  @ViewChild('horizontalMouseCrosshair')
+  horizontalMouseCrosshair: ElementRef<HTMLDivElement>;
+
+  @ViewChild('verticalMouseCrosshair')
+  verticalMouseCrosshair: ElementRef<HTMLDivElement>;
+
+  @ViewChild('mouseCrosshairArea')
+  mouseCrosshairArea: ElementRef<HTMLDivElement>;
 
   private codeEditor: ace.Ace.Editor;
   private editorChangeSubject = new Subject<ace.Ace.Delta>();
@@ -42,7 +57,12 @@ export class HomeComponent implements OnInit {
   private editorInitialized = false;
 
   showGrid = true;
+  showRuler = true;
+  showMouseCrosshair = false;
   pageDetails: PageDetails = null;
+
+  horizontalRulerMarks: number[] = [];
+  verticalRulerMarks: number[] = [];
 
   constructor(private comicManager: ComicManager, private dialog: MatDialog,
     private settingsManager: SettingsManager, private pageAnalyzer: PageAnalyer) { }
@@ -97,7 +117,7 @@ export class HomeComponent implements OnInit {
 
         this.currentPage.content = code;
 
-        this.updateGrid();
+        this.updateGridAndRuler();
 
         this.updateSessionPageSettings();
       });
@@ -280,20 +300,53 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  private updateGrid(): void {
+  private updateGridAndRuler(): void {
     const svg = this.canvas.nativeElement.querySelector('svg');
-    const svgGrid = this.gridSvg.nativeElement;
+    const svgOverlays = this.canvasContainer.nativeElement.querySelectorAll('.canvas-overlay svg');
 
     if (!svg) {
-      svgGrid.removeAttribute('viewBox');
-      svgGrid.setAttribute('height', '100%');
-      svgGrid.setAttribute('width', '100%');
+      this.showRuler = false;
+      this.showGrid = false;
+
       return;
     }
 
-    DomUtils.copyAttribute('viewBox', svg, svgGrid);
-    DomUtils.copyAttribute('height', svg, svgGrid);
-    DomUtils.copyAttribute('width', svg, svgGrid);
+    let needRefreshRuler = false;
+
+    svgOverlays.forEach(e => {
+      if (DomUtils.copyAttribute('viewBox', svg, e)) {
+        needRefreshRuler = true;
+      }
+
+      if (e.getAttribute('vc-fixed') !== 'height') {
+        if (DomUtils.copyAttribute('height', svg, e)) {
+          needRefreshRuler = true;
+        }
+      }
+
+      if (e.getAttribute('vc-fixed') !== 'width') {
+        if (DomUtils.copyAttribute('width', svg, e)) {
+          needRefreshRuler = true;
+        }
+      }
+    });
+
+    if (needRefreshRuler) {
+      const hWidth = this.horizontalRuler.nativeElement.scrollWidth;
+      this.horizontalRulerMarks = new Array(Math.floor(hWidth / this.comicSettings.grid.bigUnitSize + 1))
+        .fill(0)
+        .map((_, i) => i * this.comicSettings.grid.bigUnitSize)
+        .filter(v => v > 0);
+
+      const vWidth = this.verticalRuler.nativeElement.scrollHeight;
+      this.verticalRulerMarks = new Array(Math.floor(vWidth / this.comicSettings.grid.bigUnitSize + 1))
+        .fill(0)
+        .map((_, i) => i * this.comicSettings.grid.bigUnitSize)
+        .filter(v => v > 0);
+
+      this.mouseCrosshairArea.nativeElement.style.height = `${this.verticalRuler.nativeElement.scrollHeight}px`;
+      this.mouseCrosshairArea.nativeElement.style.width = `${this.horizontalRuler.nativeElement.scrollWidth}px`;
+    }
   }
 
   toggleGrid(show: boolean): void {
@@ -366,6 +419,35 @@ export class HomeComponent implements OnInit {
         layerElem.setAttribute('visibility', 'hidden');
       }
     });
+  }
+
+  toggleRuler(show: boolean): void {
+    this.showRuler = show;
+  }
+
+  onMouseCrosshairEnter(): void {
+    if (!this.showRuler) {
+      return;
+    }
+
+    this.showMouseCrosshair = true;
+  }
+
+  onMouseCrosshairMove(event: MouseEvent): void {
+    if (!this.showRuler) {
+      return;
+    }
+
+    this.verticalMouseCrosshair.nativeElement.style.transform = `translateX(${event.offsetX}px)`;
+    this.horizontalMouseCrosshair.nativeElement.style.transform = `translateY(${event.offsetY}px)`;
+  }
+
+  onMouseCrosshairLeave(): void {
+    if (!this.showRuler) {
+      return;
+    }
+
+    this.showMouseCrosshair = false;
   }
 }
 

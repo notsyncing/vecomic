@@ -20,6 +20,13 @@ export class SettingsManager {
 
       bigUnitLineColor: 'gray',
       smallUnitLineColor: 'gray'
+    },
+    ruler: {
+      bigUnitLineWidth: 2,
+      smallUnitLineWidth: 0.5,
+
+      bigUnitLineColor: 'black',
+      smallUnitLineColor: 'black'
     }
   };
 
@@ -73,6 +80,13 @@ export class SettingsManager {
     }
 
     this.settings.comic = JSON.parse(fs.readFileSync(configPath, 'utf-8'));
+
+    for (const key of Object.keys(this.defaultComicSettings)) {
+      if (!this.settings.comic[key]) {
+        this.settings.comic[key] = this.defaultComicSettings[key];
+      }
+    }
+
     this.currentComicBasePath = comicBasePath;
   }
 

@@ -63,32 +63,105 @@
     <mat-drawer-content>
       <as-split direction="horizontal" fxLayout="row" *ngIf="!!currentComic">
         <as-split-area size="50" fxLayout="column">
-          <div class="canvas-container" fxFlex="1 1 auto">
-            <div class="canvas-grid" [hidden]="!showGrid"
+          <div #canvasContainer class="canvas-container" fxFlex="1 1 auto">
+            <div class="canvas-overlay canvas-grid" [hidden]="!showGrid"
                  [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}">
-              <svg #gridSvg xmlns="http://www.w3.org/2000/svg">
+              <svg xmlns="http://www.w3.org/2000/svg">
                 <defs>
-                    <pattern id="smallGrid" [attr.width]="comicSettings.grid.smallUnitSize"
-                             [attr.height]="comicSettings.grid.smallUnitSize"
-                             patternUnits="userSpaceOnUse">
-                        <path [attr.d]="'M ' + comicSettings.grid.smallUnitSize + ' 0 L 0 0 0 ' + comicSettings.grid.smallUnitSize"
-                              fill="none"
-                              [attr.stroke]="comicSettings.grid.smallUnitLineColor"
-                              [attr.stroke-width]="comicSettings.grid.smallUnitLineWidth" />
-                    </pattern>
+                  <pattern id="smallGrid" [attr.width]="comicSettings.grid.smallUnitSize"
+                            [attr.height]="comicSettings.grid.smallUnitSize"
+                            patternUnits="userSpaceOnUse">
+                    <path [attr.d]="'M ' + comicSettings.grid.smallUnitSize + ' 0 L 0 0 0 ' + comicSettings.grid.smallUnitSize"
+                          fill="none"
+                          [attr.stroke]="comicSettings.grid.smallUnitLineColor"
+                          [attr.stroke-width]="comicSettings.grid.smallUnitLineWidth" />
+                  </pattern>
 
-                    <pattern id="grid" [attr.width]="comicSettings.grid.bigUnitSize"
-                             [attr.height]="comicSettings.grid.bigUnitSize" patternUnits="userSpaceOnUse">
-                        <rect [attr.width]="comicSettings.grid.bigUnitSize"
-                              [attr.height]="comicSettings.grid.bigUnitSize" fill="url(#smallGrid)" />
-                        <path [attr.d]="'M ' + comicSettings.grid.bigUnitSize + ' 0 L 0 0 0 ' + comicSettings.grid.bigUnitSize"
-                              fill="none" [attr.stroke]="comicSettings.grid.bigUnitLineColor"
-                              [attr.stroke-width]="comicSettings.grid.bigUnitLineWidth" />
-                    </pattern>
+                  <pattern id="grid" [attr.width]="comicSettings.grid.bigUnitSize"
+                            [attr.height]="comicSettings.grid.bigUnitSize" patternUnits="userSpaceOnUse">
+                    <rect [attr.width]="comicSettings.grid.bigUnitSize"
+                          [attr.height]="comicSettings.grid.bigUnitSize" fill="url(#smallGrid)" />
+                    <path [attr.d]="'M ' + comicSettings.grid.bigUnitSize + ' 0 L 0 0 0 ' + comicSettings.grid.bigUnitSize"
+                          fill="none" [attr.stroke]="comicSettings.grid.bigUnitLineColor"
+                          [attr.stroke-width]="comicSettings.grid.bigUnitLineWidth" />
+                  </pattern>
                 </defs>
 
                 <rect width="100%" height="100%" fill="url(#grid)" />
               </svg>
+            </div>
+
+            <div class="canvas-overlay canvas-rulers" [hidden]="!showRuler"
+                 [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}">
+              <div #verticalRuler class="canvas-ruler canvas-ruler-vertical">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" vc-fixed="width">
+                  <defs>
+                    <pattern id="smallVerticalRulerMark" [attr.width]="comicSettings.grid.smallUnitSize"
+                              [attr.height]="comicSettings.grid.smallUnitSize"
+                              patternUnits="userSpaceOnUse">
+                      <path [attr.d]="'M ' + comicSettings.grid.smallUnitSize + ' 0 L 0 0'"
+                            fill="none"
+                            [attr.stroke]="comicSettings.ruler.smallUnitLineColor"
+                            [attr.stroke-width]="comicSettings.ruler.smallUnitLineWidth" />
+                    </pattern>
+
+                    <pattern id="bigVerticalRulerMark" [attr.width]="comicSettings.grid.bigUnitSize"
+                              [attr.height]="comicSettings.grid.bigUnitSize" patternUnits="userSpaceOnUse">
+                      <rect [attr.width]="comicSettings.grid.bigUnitSize"
+                            [attr.height]="comicSettings.grid.bigUnitSize" fill="url(#smallVerticalRulerMark)" />
+                      <path [attr.d]="'M ' + comicSettings.grid.bigUnitSize + ' 0 L 0 0'"
+                            fill="none" [attr.stroke]="comicSettings.ruler.bigUnitLineColor"
+                            [attr.stroke-width]="comicSettings.ruler.bigUnitLineWidth" />
+                    </pattern>
+                  </defs>
+
+                  <rect width="20" height="100%" x="0" fill="url(#bigVerticalRulerMark)" />
+
+                  <text *ngFor="let y of horizontalRulerMarks" x="1" [attr.y]="y + 1"
+                        [attr.transform]="'rotate(90, 1, ' + (y + 1) + ')'"
+                        [attr.color]="comicSettings.ruler.bigUnitLineColor">
+                    {{y}}
+                  </text>
+                </svg>
+              </div>
+
+              <div #horizontalRuler class="canvas-ruler canvas-ruler-horizontal">
+                <svg xmlns="http://www.w3.org/2000/svg" height="20" vc-fixed="height">
+                  <defs>
+                    <pattern id="smallHorizontalRulerMark" [attr.width]="comicSettings.grid.smallUnitSize"
+                              [attr.height]="comicSettings.grid.smallUnitSize"
+                              patternUnits="userSpaceOnUse">
+                      <path [attr.d]="'M 0 ' + comicSettings.grid.smallUnitSize + ' L 0 0'"
+                            fill="none"
+                            [attr.stroke]="comicSettings.ruler.smallUnitLineColor"
+                            [attr.stroke-width]="comicSettings.ruler.smallUnitLineWidth" />
+                    </pattern>
+
+                    <pattern id="bigHorizontalRulerMark" [attr.width]="comicSettings.grid.bigUnitSize"
+                              [attr.height]="comicSettings.grid.bigUnitSize" patternUnits="userSpaceOnUse">
+                      <rect [attr.width]="comicSettings.grid.bigUnitSize"
+                            [attr.height]="comicSettings.grid.bigUnitSize" fill="url(#smallHorizontalRulerMark)" />
+                      <path [attr.d]="'M 0 ' + comicSettings.grid.bigUnitSize + ' L 0 0'"
+                            fill="none" [attr.stroke]="comicSettings.ruler.bigUnitLineColor"
+                            [attr.stroke-width]="comicSettings.ruler.bigUnitLineWidth" />
+                    </pattern>
+                  </defs>
+
+                  <rect width="100%" height="20" y="0" fill="url(#bigHorizontalRulerMark)" />
+
+                  <text *ngFor="let x of horizontalRulerMarks" [attr.x]="x + 1" y="12"
+                        [attr.color]="comicSettings.ruler.bigUnitLineColor">
+                    {{x}}
+                  </text>
+                </svg>
+              </div>
+            </div>
+
+            <div #mouseCrosshairArea class="canvas-overlay canvas-mouse-crosshair" (mouseenter)="onMouseCrosshairEnter()"
+                 (mousemove)="onMouseCrosshairMove($event)"
+                 (mouseleave)="onMouseCrosshairLeave()" [hidden]="!showRuler">
+              <div #verticalMouseCrosshair class="crosshair-vertical" [hidden]="!showMouseCrosshair"></div>
+              <div #horizontalMouseCrosshair class="crosshair-horizontal" [hidden]="!showMouseCrosshair"></div>
             </div>
 
             <div #canvas class="canvas"
@@ -101,6 +174,10 @@
             </button>
             <button mat-icon-button *ngIf="!showGrid" (click)="toggleGrid(true)">
               <mat-icon>grid_on</mat-icon>
+            </button>
+
+            <button mat-icon-button (click)="toggleRuler(!showRuler)">
+              <mat-icon>straighten</mat-icon>
             </button>
 
             <div class="zoom-control" fxFlex="1 1 auto">

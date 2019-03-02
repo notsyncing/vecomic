@@ -10,12 +10,21 @@ export interface GlobalSettings {
 
 export interface ComicSettings {
   grid: GridSettings;
+  ruler: RulerSettings;
 }
 
 export interface GridSettings {
   bigUnitSize: number;
   smallUnitSize: number;
 
+  bigUnitLineWidth: number;
+  smallUnitLineWidth: number;
+
+  bigUnitLineColor: string;
+  smallUnitLineColor: string;
+}
+
+export interface RulerSettings {
   bigUnitLineWidth: number;
   smallUnitLineWidth: number;
 

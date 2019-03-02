@@ -217,7 +217,7 @@
 <mat-menu #svgContentLayerMenu="matMenu" yPosition="above">
   <mat-checkbox *ngFor="let l of pageDetails?.layers || []"
                 class="layer-menu-item"
-                [checked]="!sessionPageSettings.hiddenLayers[l]"
+                [checked]="!(sessionPageSettings?.hiddenLayers || [])[l]"
                 (change)="onSvgContentLayerVisibilityChanged(l, $event)"
                 (click)="$event.stopPropagation()">
     {{l}}

@@ -69,7 +69,7 @@
                             [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}">
             </vc-canvas-grid>
 
-            <vc-canvas-rulers class="canvas-overlay" [show]="showRuler"
+            <vc-canvas-rulers svgId="vcm" class="canvas-overlay" [show]="showRuler"
                               [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}"
                               [height]="currentComicHeight" [width]="currentComicWidth"
                               [gridSettings]="comicSettings.grid" [rulerSettings]="comicSettings.ruler">

@@ -5,18 +5,32 @@ import { GridSettings, RulerSettings } from "../../business/models/settings-mode
   selector: 'vc-canvas-rulers',
   template: `
 <div class="canvas-rulers" [hidden]="!show">
-  <vc-canvas-ruler [svgId]="svgId + 'v'" orientation="vertical" [gridSettings]="gridSettings"
-                   [rulerSettings]="rulerSettings" [scrollLength]="height">
+  <vc-canvas-ruler class="canvas-rulers-vertical" [svgId]="svgId + 'v'" orientation="vertical"
+                   [gridSettings]="gridSettings" [rulerSettings]="rulerSettings"
+                   [scrollLength]="height">
   </vc-canvas-ruler>
 
-  <vc-canvas-ruler [svgId]="svgId + 'h'" orientation="horizontal" [gridSettings]="gridSettings"
-                   [rulerSettings]="rulerSettings" [scrollLength]="width">
+  <vc-canvas-ruler class="canvas-rulers-horizontal" [svgId]="svgId + 'h'" orientation="horizontal"
+                   [gridSettings]="gridSettings" [rulerSettings]="rulerSettings"
+                   [scrollLength]="width">
   </vc-canvas-ruler>
 </div>
   `,
   styles: [`
 .canvas-rulers {
   display: flex;
+}
+
+.canvas-rulers vc-canvas-ruler {
+  position: sticky;
+}
+
+.canvas-rulers-vertical {
+  left: 0;
+}
+
+.canvas-rulers-horizontal {
+  top: 0;
 }
   `]
 })

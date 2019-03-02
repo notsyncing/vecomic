@@ -1,5 +1,5 @@
 export class DomUtils {
-  public static copyAttribute(attrName: string, fromElem: Element, toElem: Element): void {
+  public static copyAttribute(attrName: string, fromElem: Element, toElem: Element): boolean {
     if (!fromElem.hasAttribute(attrName)) {
       toElem.removeAttribute(attrName);
     } else {
@@ -7,10 +7,12 @@ export class DomUtils {
       const oldValue = toElem.getAttribute(attrName);
 
       if (newValue === oldValue) {
-        return;
+        return false;
       }
 
       toElem.setAttribute(attrName, newValue);
     }
+
+    return true;
   }
 }

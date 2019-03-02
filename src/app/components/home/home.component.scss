@@ -10,25 +10,6 @@
     transform-origin: 0% 0% 0px;
   }
 
-  .canvas-rulers {
-    display: flex;
-  }
-
-  .canvas-ruler {
-    position: sticky;
-  }
-
-  .canvas-ruler-horizontal {
-    top: 0;
-    height: min-content;
-    margin-left: -20px;
-  }
-
-  .canvas-ruler-vertical {
-    left: 0;
-    width: min-content;
-  }
-
   .canvas-mouse-crosshair {
     z-index: 9999;
     cursor: none;

@@ -8,12 +8,12 @@ import { ComicManager } from '../../business/comic-manager';
 import { Comic, Page } from '../../business/models/comic-models';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import * as vex from 'vex-js';
-import { DomUtils } from '../../utils/dom-utils';
 import { MatDialog, MatCheckboxChange } from '@angular/material';
 import { SvgContentSettingsComponent } from '../svg-content-settings/svg-content-settings.component';
 import { SettingsManager } from '../../business/settings-manager';
 import { ComicSettings, GlobalSettings, SessionSettings, SessionPageSettings } from '../../business/models/settings-models';
 import { PageAnalyer, PageDetails } from '../../business/page-analyzer';
+import { CanvasRulerComponent } from '../canvas-rulers/canvas-ruler.component';
 
 @Component({
   selector: 'app-home',
@@ -30,12 +30,6 @@ export class HomeComponent implements OnInit {
 
   @ViewChild('canvas')
   canvas: ElementRef<HTMLDivElement>;
-
-  @ViewChild('horizontalRuler')
-  horizontalRuler: ElementRef<HTMLDivElement>;
-
-  @ViewChild('verticalRuler')
-  verticalRuler: ElementRef<HTMLDivElement>;
 
   @ViewChild('horizontalMouseCrosshair')
   horizontalMouseCrosshair: ElementRef<HTMLDivElement>;
@@ -56,13 +50,13 @@ export class HomeComponent implements OnInit {
 
   private editorInitialized = false;
 
+  currentComicWidth = 0;
+  currentComicHeight = 0;
+
   showGrid = true;
   showRuler = true;
   showMouseCrosshair = false;
   pageDetails: PageDetails = null;
-
-  horizontalRulerMarks: number[] = [];
-  verticalRulerMarks: number[] = [];
 
   constructor(private comicManager: ComicManager, private dialog: MatDialog,
     private settingsManager: SettingsManager, private pageAnalyzer: PageAnalyer) { }
@@ -117,7 +111,7 @@ export class HomeComponent implements OnInit {
 
         this.currentPage.content = code;
 
-        this.updateGridAndRuler();
+        this.updateSvgContentDimensions();
 
         this.updateSessionPageSettings();
       });
@@ -300,9 +294,8 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  private updateGridAndRuler(): void {
+  private updateSvgContentDimensions(): void {
     const svg = this.canvas.nativeElement.querySelector('svg');
-    const svgOverlays = this.canvasContainer.nativeElement.querySelectorAll('.canvas-overlay svg');
 
     if (!svg) {
       this.showRuler = false;
@@ -311,42 +304,11 @@ export class HomeComponent implements OnInit {
       return;
     }
 
-    let needRefreshRuler = false;
+    this.currentComicWidth = parseInt(svg.getAttribute('width'));
+    this.currentComicHeight = parseInt(svg.getAttribute('height'));
 
-    svgOverlays.forEach(e => {
-      if (DomUtils.copyAttribute('viewBox', svg, e)) {
-        needRefreshRuler = true;
-      }
-
-      if (e.getAttribute('vc-fixed') !== 'height') {
-        if (DomUtils.copyAttribute('height', svg, e)) {
-          needRefreshRuler = true;
-        }
-      }
-
-      if (e.getAttribute('vc-fixed') !== 'width') {
-        if (DomUtils.copyAttribute('width', svg, e)) {
-          needRefreshRuler = true;
-        }
-      }
-    });
-
-    if (needRefreshRuler) {
-      const hWidth = this.horizontalRuler.nativeElement.scrollWidth;
-      this.horizontalRulerMarks = new Array(Math.floor(hWidth / this.comicSettings.grid.bigUnitSize + 1))
-        .fill(0)
-        .map((_, i) => i * this.comicSettings.grid.bigUnitSize)
-        .filter(v => v > 0);
-
-      const vWidth = this.verticalRuler.nativeElement.scrollHeight;
-      this.verticalRulerMarks = new Array(Math.floor(vWidth / this.comicSettings.grid.bigUnitSize + 1))
-        .fill(0)
-        .map((_, i) => i * this.comicSettings.grid.bigUnitSize)
-        .filter(v => v > 0);
-
-      this.mouseCrosshairArea.nativeElement.style.height = `${this.verticalRuler.nativeElement.scrollHeight}px`;
-      this.mouseCrosshairArea.nativeElement.style.width = `${this.horizontalRuler.nativeElement.scrollWidth}px`;
-    }
+    this.mouseCrosshairArea.nativeElement.style.height = `${svg.getAttribute('height')}px`;
+    this.mouseCrosshairArea.nativeElement.style.width = `${svg.getAttribute('width')}px`;
   }
 
   toggleGrid(show: boolean): void {

@@ -11,5 +11,11 @@ export class CanvasGridComponent {
   show: boolean;
 
   @Input()
+  width: number;
+
+  @Input()
+  height: number;
+
+  @Input()
   settings: GridSettings;
 }

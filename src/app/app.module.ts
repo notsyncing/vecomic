@@ -39,6 +39,7 @@ import { MouseCrosshairComponent } from './components/mouse-crosshair/mouse-cros
 import { SvgLibraryContainerComponent } from './components/svg-library-container/svg-library-container.component';
 import { LibraryManager } from './business/library-manager';
 import { SafeHtmlPipe } from './pipes/safehtml.pipe';
+import { StateManager } from './business/state-manager';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -91,7 +92,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ComicManager,
     SettingsManager,
     PageAnalyer,
-    LibraryManager
+    LibraryManager,
+    StateManager
   ],
   bootstrap: [AppComponent],
   entryComponents: [

@@ -15,6 +15,8 @@ import { ComicSettings, GlobalSettings, SessionSettings, SessionPageSettings } f
 import { PageAnalyer, PageDetails } from '../../business/page-analyzer';
 import { CanvasRulerComponent } from '../canvas-rulers/canvas-ruler.component';
 import { SvgLibraryContainerComponent } from '../svg-library-container/svg-library-container.component';
+import { StateManager } from '../../business/state-manager';
+import * as fs from 'fs';
 
 @Component({
   selector: 'app-home',
@@ -53,7 +55,8 @@ export class HomeComponent implements OnInit {
   pageDetails: PageDetails = null;
 
   constructor(private comicManager: ComicManager, private dialog: MatDialog,
-    private settingsManager: SettingsManager, private pageAnalyzer: PageAnalyer) { }
+    private settingsManager: SettingsManager, private pageAnalyzer: PageAnalyer,
+    private stateManager: StateManager) { }
 
   get currentPath(): string {
     if (!this.currentComic) {
@@ -109,6 +112,10 @@ export class HomeComponent implements OnInit {
 
         this.updateSessionPageSettings();
       });
+
+    if (this.stateManager.hasKey('opened-directory')) {
+      this.openFolder(this.stateManager.get('opened-directory'));
+    }
   }
 
   private initEditor(): void {
@@ -135,6 +142,8 @@ export class HomeComponent implements OnInit {
     this.settingsManager.readComicSettingsFrom(this.currentComic.path);
 
     this.prepareToEdit();
+
+    this.stateManager.put('opened-directory', this.currentComic.path);
   }
 
   private prepareToEdit(): void {
@@ -174,6 +183,16 @@ export class HomeComponent implements OnInit {
     this.afterOpenDirectory();
   }
 
+  private openFolder(path: string): void {
+    if (!fs.existsSync(path)) {
+      console.error(`Comic path ${path} does not exist!`);
+      return;
+    }
+
+    this.currentComic = this.comicManager.open(path);
+    this.afterOpenDirectory();
+  }
+
   onOpenFolderClicked(): void {
     const paths = electron.remote.dialog.showOpenDialog({
       properties: [ 'openDirectory' ]
@@ -184,8 +203,7 @@ export class HomeComponent implements OnInit {
     }
 
     const path = paths[0];
-    this.currentComic = this.comicManager.open(path);
-    this.afterOpenDirectory();
+    this.openFolder(path);
   }
 
   onSaveClicked(): void {
@@ -228,6 +246,8 @@ export class HomeComponent implements OnInit {
     this.switchToPage(null);
 
     this.settingsManager.resetComicSettings();
+
+    this.stateManager.remove('opened-directory');
   }
 
   onPageListReordered(event: CdkDragDrop<string[]>): void {

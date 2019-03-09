@@ -14,6 +14,7 @@ import { SettingsManager } from '../../business/settings-manager';
 import { ComicSettings, GlobalSettings, SessionSettings, SessionPageSettings } from '../../business/models/settings-models';
 import { PageAnalyer, PageDetails } from '../../business/page-analyzer';
 import { CanvasRulerComponent } from '../canvas-rulers/canvas-ruler.component';
+import { SvgLibraryContainerComponent } from '../svg-library-container/svg-library-container.component';
 
 @Component({
   selector: 'app-home',
@@ -30,6 +31,9 @@ export class HomeComponent implements OnInit {
 
   @ViewChild('canvas')
   canvas: ElementRef<HTMLDivElement>;
+
+  @ViewChild('libraries')
+  libraries: SvgLibraryContainerComponent;
 
   private codeEditor: ace.Ace.Editor;
   private editorChangeSubject = new Subject<ace.Ace.Delta>();

@@ -36,6 +36,9 @@ import { CanvasGridComponent } from './components/canvas-grid/canvas-grid.compon
 import { CanvasRulerComponent } from './components/canvas-rulers/canvas-ruler.component';
 import { CanvasRulersComponent } from './components/canvas-rulers/canvas-rulers.component';
 import { MouseCrosshairComponent } from './components/mouse-crosshair/mouse-crosshair.component';
+import { SvgLibraryContainerComponent } from './components/svg-library-container/svg-library-container.component';
+import { LibraryManager } from './business/library-manager';
+import { SafeHtmlPipe } from './pipes/safehtml.pipe';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -51,7 +54,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     CanvasGridComponent,
     CanvasRulerComponent,
     CanvasRulersComponent,
-    MouseCrosshairComponent
+    MouseCrosshairComponent,
+    SvgLibraryContainerComponent,
+    SafeHtmlPipe
   ],
   imports: [
     BrowserModule,
@@ -81,7 +86,13 @@ export function HttpLoaderFactory(http: HttpClient) {
     MatTabsModule,
     DragDropModule
   ],
-  providers: [ElectronService, ComicManager, SettingsManager, PageAnalyer],
+  providers: [
+    ElectronService,
+    ComicManager,
+    SettingsManager,
+    PageAnalyer,
+    LibraryManager
+  ],
   bootstrap: [AppComponent],
   entryComponents: [
     SvgContentSettingsComponent

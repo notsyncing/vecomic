@@ -1,0 +1,14 @@
+{
+  "name": "base",
+  "version": 1,
+  "components": [
+    {
+      "name": "vc-hline",
+      "path": "vc-hline.svg"
+    },
+    {
+      "name": "vc-vline",
+      "path": "vc-vline.svg"
+    }
+  ]
+}

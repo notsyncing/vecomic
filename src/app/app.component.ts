@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, AfterViewInit } from '@angular/core';
 import { ElectronService } from './providers/electron.service';
 import { TranslateService } from '@ngx-translate/core';
 import { AppConfig } from '../environments/environment';
@@ -10,7 +10,7 @@ import * as vexDialog from 'vex-dialog';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   constructor(public electronService: ElectronService, private translate: TranslateService) {
     translate.setDefaultLang('en');
     console.log('AppConfig', AppConfig);
@@ -25,5 +25,14 @@ export class AppComponent {
 
     vex.registerPlugin(vexDialog);
     vex.defaultOptions.className = 'vex-theme-os';
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      const loading = document.querySelector('.loading-container') as HTMLDivElement;
+      loading.style.display = 'none';
+
+      console.info('Vecomic initialized.');
+    }, 0);
   }
 }

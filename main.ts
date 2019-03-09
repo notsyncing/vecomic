@@ -17,6 +17,7 @@ function createWindow() {
     y: 0,
     width: size.width,
     height: size.height,
+    backgroundColor: '#673ab7',
 
     webPreferences: {
       nodeIntegration: true

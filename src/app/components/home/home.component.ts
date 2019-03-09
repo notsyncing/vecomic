@@ -397,5 +397,15 @@ export class HomeComponent implements OnInit {
   toggleRuler(show: boolean): void {
     this.showRuler = show;
   }
+
+  toggleDevTools(): void {
+    const webContents = electron.remote.getCurrentWebContents();
+
+    if (webContents.isDevToolsOpened()) {
+      webContents.closeDevTools();
+    } else {
+      webContents.openDevTools();
+    }
+  }
 }
 

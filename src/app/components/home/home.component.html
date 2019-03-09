@@ -27,6 +27,10 @@
     <button mat-icon-button (click)="onCloseFolderClicked()" *ngIf="!!currentComic">
       <mat-icon>close</mat-icon>
     </button>
+
+    <button mat-icon-button (click)="toggleDevTools()">
+      <mat-icon>build</mat-icon>
+    </button>
   </mat-toolbar>
 
   <mat-drawer-container fxFlex>

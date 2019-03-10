@@ -17,6 +17,7 @@ import { SvgLibraryContainerComponent } from '../svg-library-container/svg-libra
 import { StateManager } from '../../business/state-manager';
 import * as fs from 'fs';
 import { CanvasComponent } from '../canvas/canvas.component';
+import { CanvasRulersComponent } from '../canvas-rulers/canvas-rulers.component';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +34,9 @@ export class HomeComponent implements OnInit {
 
   @ViewChild('canvas')
   canvas: CanvasComponent;
+
+  @ViewChild('canvasRulers')
+  canvasRulers: CanvasRulersComponent;
 
   @ViewChild('libraries')
   libraries: SvgLibraryContainerComponent;
@@ -394,6 +398,11 @@ export class HomeComponent implements OnInit {
 
   toggleHud(show: boolean): void {
     this.showHud = show;
+  }
+
+  onCanvasScroll(event: Event): void {
+    this.canvasRulers.scrollLeft = this.canvasContainer.nativeElement.scrollLeft;
+    this.canvasRulers.scrollTop = this.canvasContainer.nativeElement.scrollTop;
   }
 }
 

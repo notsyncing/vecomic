@@ -5,7 +5,8 @@ import { GridSettings, RulerSettings } from "../../business/models/settings-mode
   selector: 'vc-canvas-ruler',
   template: `
 <div #ruler class="canvas-ruler"
-     [ngClass]="{'canvas-ruler-vertical': orientation === 'vertical', 'canvas-ruler-horizontal': orientation === 'horizontal'}">
+     [ngClass]="{'canvas-ruler-vertical': orientation === 'vertical', 'canvas-ruler-horizontal': orientation === 'horizontal'}"
+     [ngStyle]="{'left': left + 'px', 'top': top + 'px'}">
   <svg xmlns="http://www.w3.org/2000/svg"
        [attr.width]="orientation === 'vertical' ? 20 : scrollLength"
        [attr.height]="orientation === 'horizontal' ? 20 : scrollLength">
@@ -56,13 +57,12 @@ import { GridSettings, RulerSettings } from "../../business/models/settings-mode
   `,
   styles: [`
 .canvas-ruler {
-  position: sticky;
+  position: absolute;
 }
 
 .canvas-ruler-horizontal {
   top: 0;
   height: min-content;
-  margin-left: -20px;
 }
 
 .canvas-ruler-vertical {
@@ -102,6 +102,12 @@ export class CanvasRulerComponent {
 
   @Input()
   rulerSettings: RulerSettings;
+
+  @Input()
+  left: number = 0;
+
+  @Input()
+  top: number = 0;
 
   @ViewChild('ruler')
   ruler: ElementRef<HTMLDivElement>;

@@ -73,14 +73,14 @@
                          [mouseAbsX]="mouseCrosshair.mouseAbsX" [mouseAbsY]="mouseCrosshair.mouseAbsY">
           </vc-canvas-hud>
 
-          <div #canvasContainer class="canvas-container" fxFlex="1 1 auto">
+          <div #canvasContainer class="canvas-container" fxFlex="1 1 auto" (scroll)="onCanvasScroll($event)">
             <vc-canvas-grid class="canvas-overlay" [show]="showGrid" [settings]="comicSettings.grid"
                             [width]="canvas.contentWidth" [height]="canvas.contentHeight"
                             [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}">
             </vc-canvas-grid>
 
-            <vc-canvas-rulers svgId="vcm" class="canvas-overlay" [show]="showRuler"
-                              [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}"
+            <vc-canvas-rulers #canvasRulers svgId="vcm" class="canvas-overlay" [show]="showRuler"
+                              [scale]="sessionSettings.zoomPercentage / 100"
                               [height]="canvas.contentHeight" [width]="canvas.contentWidth"
                               [gridSettings]="comicSettings.grid" [rulerSettings]="comicSettings.ruler">
             </vc-canvas-rulers>

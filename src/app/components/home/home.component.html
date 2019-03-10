@@ -95,22 +95,24 @@
           </div>
 
           <mat-toolbar fxFlex="0 0 auto" fxLayout="row">
-            <button mat-icon-button *ngIf="showGrid" (click)="toggleGrid(false)">
-              <mat-icon>grid_off</mat-icon>
-            </button>
-            <button mat-icon-button *ngIf="!showGrid" (click)="toggleGrid(true)">
-              <mat-icon>grid_on</mat-icon>
-            </button>
+            <div fxFlex="1 1 auto" class="canvas-controls-left">
+              <button mat-icon-button *ngIf="showGrid" (click)="toggleGrid(false)">
+                <mat-icon>grid_off</mat-icon>
+              </button>
+              <button mat-icon-button *ngIf="!showGrid" (click)="toggleGrid(true)">
+                <mat-icon>grid_on</mat-icon>
+              </button>
 
-            <button mat-icon-button (click)="toggleRuler(!showRuler)">
-              <mat-icon>straighten</mat-icon>
-            </button>
+              <button mat-icon-button (click)="toggleRuler(!showRuler)">
+                <mat-icon>straighten</mat-icon>
+              </button>
 
-            <button mat-icon-button (click)="toggleHud(!showHud)">
-              <mat-icon>picture_in_picture</mat-icon>
-            </button>
+              <button mat-icon-button (click)="toggleHud(!showHud)">
+                <mat-icon>picture_in_picture</mat-icon>
+              </button>
+            </div>
 
-            <div class="zoom-control" fxFlex="1 1 auto">
+            <div class="zoom-control">
               <button mat-icon-button (click)="onSvgContentZoomInClicked()">
                 <mat-icon>zoom_in</mat-icon>
               </button>
@@ -124,13 +126,15 @@
               </button>
             </div>
 
-            <button mat-icon-button [matMenuTriggerFor]="svgContentLayerMenu">
-              <mat-icon>layers</mat-icon>
-            </button>
+            <div fxFlex="1 1 auto" class="canvas-controls-right">
+              <button mat-icon-button [matMenuTriggerFor]="svgContentLayerMenu">
+                <mat-icon>layers</mat-icon>
+              </button>
 
-            <button mat-icon-button (click)="onSvgContentSettingsClicked()">
-              <mat-icon>tune</mat-icon>
-            </button>
+              <button mat-icon-button (click)="onSvgContentSettingsClicked()">
+                <mat-icon>tune</mat-icon>
+              </button>
+            </div>
           </mat-toolbar>
         </as-split-area>
 

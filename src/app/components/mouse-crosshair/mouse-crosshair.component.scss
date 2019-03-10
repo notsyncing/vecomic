@@ -9,6 +9,7 @@
     border-top: 1px dashed black;
     border-left: 1px dashed black;
     transform-origin: 0% 0% 0px;
+    z-index: -1;
   }
 
   .crosshair-vertical {

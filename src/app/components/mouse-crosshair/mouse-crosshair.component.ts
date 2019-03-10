@@ -5,9 +5,10 @@ import { Component, Input, ElementRef, ViewChild, Output } from "@angular/core";
   template: `
 <div class="canvas-mouse-crosshair"
      [ngStyle]="{'height': height + 'px', 'width': width + 'px'}"
+     [ngClass]="{'normal-mouse': !showMouseCrosshair}"
      (mouseenter)="onMouseCrosshairEnter()"
      (mousemove)="onMouseCrosshairMove($event)"
-     (mouseleave)="onMouseCrosshairLeave()" [hidden]="!show">
+     (mouseleave)="onMouseCrosshairLeave()">
   <div #verticalMouseCrosshair class="crosshair-vertical" [hidden]="!showMouseCrosshair"></div>
   <div #horizontalMouseCrosshair class="crosshair-horizontal" [hidden]="!showMouseCrosshair"></div>
 </div>
@@ -53,18 +54,18 @@ export class MouseCrosshairComponent {
   }
 
   onMouseCrosshairMove(event: MouseEvent): void {
+    this.mouseX = event.offsetX;
+    this.mouseY = event.offsetY;
+
+    this.mouseAbsX = event.clientX;
+    this.mouseAbsY = event.clientY;
+
     if (!this.show) {
       return;
     }
 
     this.verticalMouseCrosshair.nativeElement.style.transform = `translateX(${event.offsetX}px)`;
     this.horizontalMouseCrosshair.nativeElement.style.transform = `translateY(${event.offsetY}px)`;
-
-    this.mouseX = event.offsetX;
-    this.mouseY = event.offsetY;
-
-    this.mouseAbsX = event.clientX;
-    this.mouseAbsY = event.clientY;
   }
 
   onMouseCrosshairLeave(): void {

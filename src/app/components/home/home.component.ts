@@ -13,7 +13,6 @@ import { SvgContentSettingsComponent } from '../svg-content-settings/svg-content
 import { SettingsManager } from '../../business/settings-manager';
 import { ComicSettings, GlobalSettings, SessionSettings, SessionPageSettings } from '../../business/models/settings-models';
 import { PageAnalyer, PageDetails } from '../../business/page-analyzer';
-import { CanvasRulerComponent } from '../canvas-rulers/canvas-ruler.component';
 import { SvgLibraryContainerComponent } from '../svg-library-container/svg-library-container.component';
 import { StateManager } from '../../business/state-manager';
 import * as fs from 'fs';

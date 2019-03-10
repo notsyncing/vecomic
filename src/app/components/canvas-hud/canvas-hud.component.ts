@@ -1,5 +1,4 @@
 import { Component, Input, ElementRef, ViewChild, AfterContentChecked } from "@angular/core";
-import { CanvasComponent } from "../canvas/canvas.component";
 
 @Component({
   selector: 'vc-canvas-hud',

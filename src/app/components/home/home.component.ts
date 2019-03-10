@@ -17,6 +17,7 @@ import { CanvasRulerComponent } from '../canvas-rulers/canvas-ruler.component';
 import { SvgLibraryContainerComponent } from '../svg-library-container/svg-library-container.component';
 import { StateManager } from '../../business/state-manager';
 import * as fs from 'fs';
+import { CanvasComponent } from '../canvas/canvas.component';
 
 @Component({
   selector: 'app-home',
@@ -32,7 +33,7 @@ export class HomeComponent implements OnInit {
   canvasContainer: ElementRef<HTMLDivElement>;
 
   @ViewChild('canvas')
-  canvas: ElementRef<HTMLDivElement>;
+  canvas: CanvasComponent;
 
   @ViewChild('libraries')
   libraries: SvgLibraryContainerComponent;
@@ -47,11 +48,9 @@ export class HomeComponent implements OnInit {
 
   private editorInitialized = false;
 
-  currentComicWidth = 0;
-  currentComicHeight = 0;
-
   showGrid = true;
   showRuler = true;
+  showHud = true;
   pageDetails: PageDetails = null;
 
   constructor(private comicManager: ComicManager, private dialog: MatDialog,
@@ -101,14 +100,12 @@ export class HomeComponent implements OnInit {
         const code = this.codeEditor.getValue();
 
         try {
-          this.canvas.nativeElement.innerHTML = code;
+          this.canvas.content = code;
         } catch (err) {
           console.warn(err);
         }
 
         this.currentPage.content = code;
-
-        this.updateSvgContentDimensions();
 
         this.updateSessionPageSettings();
       });
@@ -306,20 +303,6 @@ export class HomeComponent implements OnInit {
     if (page.id === this.currentPageId) {
       this.switchToPage(this.currentComic.pages[0].id);
     }
-  }
-
-  private updateSvgContentDimensions(): void {
-    const svg = this.canvas.nativeElement.querySelector('svg');
-
-    if (!svg) {
-      this.showRuler = false;
-      this.showGrid = false;
-
-      return;
-    }
-
-    this.currentComicWidth = parseInt(svg.getAttribute('width'));
-    this.currentComicHeight = parseInt(svg.getAttribute('height'));
   }
 
   toggleGrid(show: boolean): void {

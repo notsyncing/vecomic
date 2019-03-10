@@ -40,6 +40,8 @@ import { SvgLibraryContainerComponent } from './components/svg-library-container
 import { LibraryManager } from './business/library-manager';
 import { SafeHtmlPipe } from './pipes/safehtml.pipe';
 import { StateManager } from './business/state-manager';
+import { CanvasHudComponent } from './components/canvas-hud/canvas-hud.component';
+import { CanvasComponent } from './components/canvas/canvas.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -57,6 +59,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     CanvasRulersComponent,
     MouseCrosshairComponent,
     SvgLibraryContainerComponent,
+    CanvasHudComponent,
+    CanvasComponent,
     SafeHtmlPipe
   ],
   imports: [

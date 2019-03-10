@@ -66,25 +66,32 @@
     </mat-drawer>
     <mat-drawer-content>
       <as-split direction="horizontal" fxLayout="row" *ngIf="!!currentComic">
-        <as-split-area size="50" fxLayout="column">
+        <as-split-area class="canvas-area" size="50" fxLayout="column">
+          <vc-canvas-hud class="canvas-hud" [show]="showHud"
+                         [scaleRatio]="sessionSettings.zoomPercentage / 100"
+                         [mouseX]="mouseCrosshair.mouseX" [mouseY]="mouseCrosshair.mouseY"
+                         [mouseAbsX]="mouseCrosshair.mouseAbsX" [mouseAbsY]="mouseCrosshair.mouseAbsY">
+          </vc-canvas-hud>
+
           <div #canvasContainer class="canvas-container" fxFlex="1 1 auto">
             <vc-canvas-grid class="canvas-overlay" [show]="showGrid" [settings]="comicSettings.grid"
-                            [width]="currentComicWidth" [height]="currentComicHeight"
+                            [width]="canvas.contentWidth" [height]="canvas.contentHeight"
                             [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}">
             </vc-canvas-grid>
 
             <vc-canvas-rulers svgId="vcm" class="canvas-overlay" [show]="showRuler"
                               [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}"
-                              [height]="currentComicHeight" [width]="currentComicWidth"
+                              [height]="canvas.contentHeight" [width]="canvas.contentWidth"
                               [gridSettings]="comicSettings.grid" [rulerSettings]="comicSettings.ruler">
             </vc-canvas-rulers>
 
-            <vc-mouse-crosshair class="canvas-overlay canvas-overlay-most-front cursor-crosshair" [show]="showRuler"
-                                [height]="currentComicHeight" [width]="currentComicWidth">
+            <vc-mouse-crosshair #mouseCrosshair class="canvas-overlay canvas-overlay-most-front cursor-crosshair"
+                                [show]="showRuler"
+                                [height]="canvas.contentHeight" [width]="canvas.contentWidth">
             </vc-mouse-crosshair>
 
-            <div #canvas class="canvas"
-                 [ngStyle]="{'transform': 'scale(' + sessionSettings.zoomPercentage / 100 + ')'}"></div>
+            <vc-canvas #canvas class="canvas" [scale]="sessionSettings.zoomPercentage / 100">
+            </vc-canvas>
           </div>
 
           <mat-toolbar fxFlex="0 0 auto" fxLayout="row">

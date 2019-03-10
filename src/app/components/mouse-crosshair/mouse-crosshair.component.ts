@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, ViewChild } from "@angular/core";
+import { Component, Input, ElementRef, ViewChild, Output } from "@angular/core";
 
 @Component({
   selector: 'vc-mouse-crosshair',
@@ -24,6 +24,18 @@ export class MouseCrosshairComponent {
   @Input()
   width: number;
 
+  @Output()
+  mouseX: number = 0;
+
+  @Output()
+  mouseY: number = 0;
+
+  @Output()
+  mouseAbsX: number = 0;
+
+  @Output()
+  mouseAbsY: number = 0;
+
   showMouseCrosshair = false;
 
   @ViewChild('horizontalMouseCrosshair')
@@ -47,6 +59,12 @@ export class MouseCrosshairComponent {
 
     this.verticalMouseCrosshair.nativeElement.style.transform = `translateX(${event.offsetX}px)`;
     this.horizontalMouseCrosshair.nativeElement.style.transform = `translateY(${event.offsetY}px)`;
+
+    this.mouseX = event.offsetX;
+    this.mouseY = event.offsetY;
+
+    this.mouseAbsX = event.clientX;
+    this.mouseAbsY = event.clientY;
   }
 
   onMouseCrosshairLeave(): void {

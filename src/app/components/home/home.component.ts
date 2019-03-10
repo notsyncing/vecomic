@@ -389,5 +389,9 @@ export class HomeComponent implements OnInit {
       webContents.openDevTools();
     }
   }
+
+  toggleHud(show: boolean): void {
+    this.showHud = show;
+  }
 }
 

@@ -106,7 +106,9 @@ export class HomeComponent implements OnInit {
 
         this.currentPage.content = code;
 
-        this.updateSessionPageSettings();
+        setTimeout(() => {
+          this.updateSessionPageSettings();
+        }, 0);
       });
 
     if (this.stateManager.hasKey('opened-directory')) {

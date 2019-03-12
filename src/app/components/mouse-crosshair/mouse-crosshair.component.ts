@@ -4,7 +4,7 @@ import { Component, Input, ElementRef, ViewChild, Output } from "@angular/core";
   selector: 'vc-mouse-crosshair',
   template: `
 <div class="canvas-mouse-crosshair"
-     [ngStyle]="{'height': height + 'px', 'width': width + 'px'}"
+     [ngStyle]="{'height': computedHeight + 'px', 'width': computedWidth + 'px'}"
      [ngClass]="{'normal-mouse': !showMouseCrosshair}"
      (mouseenter)="onMouseCrosshairEnter()"
      (mousemove)="onMouseCrosshairMove($event)"
@@ -18,6 +18,9 @@ import { Component, Input, ElementRef, ViewChild, Output } from "@angular/core";
 export class MouseCrosshairComponent {
   @Input()
   show: boolean;
+
+  @Input()
+  scaleRatio: number;
 
   @Input()
   height: number;
@@ -44,6 +47,14 @@ export class MouseCrosshairComponent {
 
   @ViewChild('verticalMouseCrosshair')
   verticalMouseCrosshair: ElementRef<HTMLDivElement>;
+
+  get computedHeight(): number {
+    return Math.floor(this.height * this.scaleRatio);
+  }
+
+  get computedWidth(): number {
+    return Math.floor(this.width * this.scaleRatio);
+  }
 
   onMouseCrosshairEnter(): void {
     if (!this.show) {

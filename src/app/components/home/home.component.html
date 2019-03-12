@@ -86,7 +86,7 @@
             </vc-canvas-rulers>
 
             <vc-mouse-crosshair #mouseCrosshair class="canvas-overlay canvas-overlay-most-front cursor-crosshair"
-                                [show]="showRuler"
+                                [show]="showRuler" [scaleRatio]="sessionSettings.zoomPercentage / 100"
                                 [height]="canvas.contentHeight" [width]="canvas.contentWidth">
             </vc-mouse-crosshair>
 

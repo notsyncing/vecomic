@@ -25,6 +25,7 @@ import { Component, Input, ElementRef, ViewChild, AfterContentChecked } from "@a
   border-radius: 50px;
   width: 5rem;
   text-align: center;
+  z-index: 999;
 }
 
 .cursor-pos.hover {
